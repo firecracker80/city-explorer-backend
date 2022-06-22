@@ -22,17 +22,17 @@ app.get('/city', (request, response) => {
   
   try{
     console.log(request.query);
-    let cityName = request.query.cityWeather.toLowerCase();
+    let cityName = request.query.searchQuery.toLowerCase();
     console.log(cityName);
-    let dataToSee = data.find(city => city.city_name.toLowerCase() === cityName)
-    let cityWeather = [];
+    let dataToSee = data.find(weather => weather.city_name.toLowerCase() === cityName)
+    let searchQuery = [];
     for(let i=0; i<dataToSee.data.length; i++){
         console.log(dataToSee.data[i]);
-        cityWeather.push(new Forecast (dataToSee.data[i], cityName));
+        searchQuery.push(new Forecast (dataToSee.data[i], cityName));
       }
-    console.log('city weather', cityWeather);
+    console.log('city weather', searchQuery);
     // let dataToSend = new Forecast(dataToSee);
-    response.send(cityWeather);
+    response.send(searchQuery);
     
   }
   catch(error){
