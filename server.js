@@ -22,12 +22,19 @@ app.get('/city', async (request, response) => {
   
   try{
     console.log(request.query);
-    let cityName = request.query.searchQuery.toLowerCase();
+    let cityName = request.query.searchQuery;
+    let lat = '47.60621';
+    console.log(lat);
+    let lon = '-122.33207';
+    console.log(lon);
     console.log(cityName);
     // let dataToSee = data.find(weather => weather.city_name.toLowerCase() === cityName)
-    let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${WEATHER_API_KEY}&lang=en&units=I&days=5&lat=${cityFind.data[0].lat}&lon=${cityFind.data[0].lon}`;
+    let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.REACT_APP_WEATHER_API_KEY}&lang=en&units=I&days=5&lat=${lat}&lon=${lon}`;
+    console.log(url);
     let weatherInfo = await axios.get(url);
+    console.log(weatherInfo);
     let weatherData = weatherInfo.data.weather.map(skies => new Forecast(skies));
+    console.log(weatherData)
     respond.send(weatherData)
 
     // let searchQuery = [];
