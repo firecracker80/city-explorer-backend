@@ -18,21 +18,26 @@ app.get('/hello',(request, response) => {
   response.send('hello')
 })
 
-app.get('/city', (request, response) => {
+app.get('/city', async (request, response) => {
   
   try{
     console.log(request.query);
     let cityName = request.query.searchQuery.toLowerCase();
     console.log(cityName);
-    let dataToSee = data.find(weather => weather.city_name.toLowerCase() === cityName)
-    let searchQuery = [];
-    for(let i=0; i<dataToSee.data.length; i++){
-        console.log(dataToSee.data[i]);
-        searchQuery.push(new Forecast (dataToSee.data[i], cityName));
-      }
-    console.log('city weather', searchQuery);
-    // let dataToSend = new Forecast(dataToSee);
-    response.send(searchQuery);
+    // let dataToSee = data.find(weather => weather.city_name.toLowerCase() === cityName)
+    let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${WEATHER_API_KEY}&lang=en&units=I&days=5&lat=${cityFind.data[0].lat}&lon=${cityFind.data[0].lon}`;
+    let weatherInfo = await axios.get(url);
+    let weatherData = weatherInfo.data.weather.map(skies => new Forecast(skies));
+    respond.send(weatherData)
+
+    // let searchQuery = [];
+    // for(let i=0; i<dataToSee.data.length; i++){
+    //     console.log(dataToSee.data[i]);
+    //     searchQuery.push(new Forecast (dataToSee.data[i], cityName));
+    //   }
+    // console.log('city weather', searchQuery);
+    // // let dataToSend = new Forecast(dataToSee);
+    // response.send(searchQuery);
     
   }
   catch(error){
@@ -51,10 +56,10 @@ app.get('*', (request, response) => {
 })
 
 class Forecast {
-  constructor(citySky, cityName) {
-    this.name = cityName;
-    this.date = citySky.datetime;
-    this.description = citySky.weather.description;
+  constructor(skies) {
+    // this.name = cityName;
+    this.date = skies.datetime;
+    this.description = skies.weather.description;
 
 
   }
