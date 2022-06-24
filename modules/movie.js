@@ -8,10 +8,8 @@ async function getMovie (request, response, next){
     let movieName = request.query.searchQuery;
     let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${movieName}`;
     let movieData = await axios.get(url);
-    console.log(movieData.data);
     let filmData = movieData.data.results.map(film => new Movie(film));
     response.send(filmData);
-    console.log(filmData);
   }
   catch (error) {
     handleError(error, response);
