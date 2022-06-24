@@ -70,3 +70,17 @@ Actual time needed to complete: 1 hr 25 minutes
 WRRC:
 
 ![Lab 9 WRRC](/images/lab9.jpg)
+
+Name of feature: Add Cache
+
+Estimate of time needed to complete: 1 hr
+
+Start time: 2 pm
+
+Finish time: 3 pm
+
+Actual time needed to complete: 1 hr
+
+WRRC:
+
+![Lab 10 WRRC](/images/lab10.png)
