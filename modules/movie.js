@@ -22,6 +22,8 @@ class Movie {
   constructor(film) {
     this.title = film.title;
     this.date = film.release_date;
+    this.decription = film.overview ? film.overview : 'Not available at this time.';
+    this.src = film.poster_path ? film.poster_path :  
   }
 }
 
