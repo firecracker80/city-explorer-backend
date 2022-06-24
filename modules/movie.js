@@ -42,9 +42,8 @@ class Movie {
   constructor(film) {
     this.title = film.title;
     this.date = film.release_date;
-
     this.overview = film.overview;
-    this.src = film.poster_path ? 'https://image.tmdb.org/t/p/w500' + film.poster_path : '../images/Placeholder.png';
+    // this.src = film.src; 
 
   }
 }
