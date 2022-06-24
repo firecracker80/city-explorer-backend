@@ -30,4 +30,4 @@ app.get('*', (request, response) => {
   response.send('What you are looking for, doesn\'t exist');
 })
 //LISTEN
-app.listen(PORT, () => console.log(`LISTENING ON PORT ${PORT}`)); ''
+app.listen(PORT, () => console.log(`LISTENING ON PORT ${PORT}`));
