@@ -3,7 +3,7 @@
 const axios = require('axios');
 
 let cache = {
-
+  // cache[key] = cache[key].data;
 };
 
 async function getMovie (request, response, next){
@@ -15,8 +15,8 @@ let key = movieName + 'Data';
 console.log(key);
 let timeToCache = 1000 * 60 * 60 * 24 * 30;
 console.log(timeToCache);
-let testTimeToCache = 1000 * 20;
-console.log(testTimeToCache);
+// let testTimeToCache = 1000 * 20;
+// console.log(testTimeToCache);
   if(cache[key] && Date.now() - cache[key].timestamp < timeToCache){
     response.send(cache[key].data)
   } else {
@@ -43,7 +43,7 @@ class Movie {
     this.title = film.title;
     this.date = film.release_date;
     this.overview = film.overview;
-    // this.src = film.src; 
+    this.src = film.src; 
 
   }
 }
