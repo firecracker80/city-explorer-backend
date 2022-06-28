@@ -1,39 +1,43 @@
-// 'use strict';
+'use strict';
 
-// const axios = require('axios');
+const axios = require('axios');
+const { response } = require('express');
 
-// async function getWeather (request, response, next){
+let cache = require('./cache.js');
+
+
+function getWeather(latitude, longitude) {
+  const key = 'weather-' + latitude + longitude;
+  const url = `http://api.weatherbit.io/v2.0/forecast/daily/?key=${process.env.WEATHER_API_KEY}&lang=en&lat=${latitude}&lon=${longitude}&days=5`;
   
-//   try{
-//     let cityName = request.query.searchQuery;
-//     console.log(cityName);
-//     let lat = request.query.lat;
-//     console.log(lat);
-//     let lon = request.query.lon;
-//     console.log(lon);
-//     let url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&lang=en&units=I&days=5&lat=${lat}&lon=${lon}`;
-//     let weatherInfo = await axios.get(url);
-//     console.log(weatherInfo);
-//     let weatherData = weatherInfo.data.data.map(skies => new Forecast(skies));
-//     console.log(weatherData);
-//     response.send(weatherData)
-//   }
-//   catch(error){
-//     handleError(error, response);
-//     next(error);
-//   }
-// };
+  if (cache[key] && Date.now() - cache[key].timestamp < 50000) {
+    console.log('Cache hit');
+  } else {
+    console.log('Cache miss');
+    cache[key] = {};
+    cache[key].timestamp = Date.now();
+    cache[key].data = axios.get(url)
+    .then(response => parseWeather(response.data));
+  }
+  
+  return cache[key].data;
+}
 
+function parseWeather(weatherData) {
+  try {
+    const weatherSummaries = weatherData.data.map(day => {
+      return new Weather(day);
+    });
+    return Promise.resolve(weatherSummaries);
+  } catch (e) {
+    return Promise.reject(e);
+  }
+}
 
-// class Forecast {
-//   constructor(skies) {
-//     this.date = skies.datetime;
-//     this.description = skies.weather.description;
-//   }
-// }
-
-// const handleError = (error, response) => {
-//   response.status(500).send('Something went wrong.')
-// }
-
-// module.exports = getWeather;
+class Weather {
+  constructor(day) {
+    this.forecast = day.weather.description;
+    this.time = day.datetime;
+  }
+}
+module.exports = getWeather;
